@@ -1,10 +1,16 @@
+import Hero from "../components/Hero";
+import Calculator from "../components/Calculator";
+import LatestRates from "../components/LatestRates";
+import Footer from "../components/Footer";
+
 function Home() {
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <h1 className="text-5xl font-bold text-blue-600">
-        Welcome to MoneyHub 💰
-      </h1>
-    </div>
+    <>
+      <Hero />
+      <Calculator />
+      <LatestRates />
+      <Footer />
+    </>
   );
 }
 
