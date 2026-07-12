@@ -1,17 +1,7 @@
-import Hero from "../components/Hero";
-import Calculator from "../components/Calculator";
-import LatestRates from "../components/LatestRates";
-import Footer from "../components/Footer";
+import Hero from "../components/home/Hero";
 
 function Home() {
-  return (
-    <>
-      <Hero />
-      <Calculator />
-      <LatestRates />
-      <Footer />
-    </>
-  );
+  return <Hero />;
 }
 
 export default Home;

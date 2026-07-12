@@ -1,11 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Navbar from "./components/Navbar";
-
 import Home from "./pages/Home";
 import Compare from "./pages/Compare";
 import BankDetails from "./pages/BankDetails";
 import NotFound from "./pages/NotFound";
+import Navbar from "./components/layout/Navbar";
 
 function App() {
   return (
