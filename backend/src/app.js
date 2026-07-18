@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 
+import bankRoutes from "./routes/bank.routes.js";
+
 const app = express();
 
 app.use(cors());
@@ -19,5 +21,8 @@ app.get("/health", (req, res) => {
     status: "OK"
   });
 });
+
+// API Routes
+app.use("/api/v1/banks", bankRoutes);
 
 export default app;
