@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
-
-import bankRoutes from "./routes/bank.routes.js";
+import apiRoutes from "./routes/index.js";
 
 const app = express();
 
@@ -12,17 +11,16 @@ app.get("/", (req, res) => {
   res.json({
     app: "MoneyHub API",
     status: "Running",
-    version: "1.0.0"
+    version: "1.0.0",
   });
 });
 
 app.get("/health", (req, res) => {
   res.json({
-    status: "OK"
+    status: "OK",
   });
 });
 
-// API Routes
-app.use("/api/v1/banks", bankRoutes);
+app.use("/api/v1", apiRoutes);
 
 export default app;
