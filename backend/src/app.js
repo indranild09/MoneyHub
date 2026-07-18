@@ -6,4 +6,18 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.json({
+    app: "MoneyHub API",
+    status: "Running",
+    version: "1.0.0"
+  });
+});
+
+app.get("/health", (req, res) => {
+  res.json({
+    status: "OK"
+  });
+});
+
 export default app;
