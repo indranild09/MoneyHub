@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Bank {
+  id        Int     @id @default(autoincrement())
+  name      String  @unique
+  shortName String
+  logoUrl   String?
+  website   String?
+
+  interestRates InterestRate[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model InterestRate {
+  id Int @id @default(autoincrement())
+
+  bankId Int
+  bank   Bank @relation(fields: [bankId], references: [id])
+
+  depositType  String
+  customerType String
+
+  minMonths Int
+  maxMonths Int
+
+  interestRate Float
+
+  effectiveFrom DateTime
+  effectiveTo   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
