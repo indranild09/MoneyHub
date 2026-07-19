@@ -66,6 +66,23 @@ function calculateRD(monthlyDeposit, annualRate, months) {
   };
 }
 
+export async function compareReturns(data) {
+  const {
+    depositType,
+    customerType,
+    amount,
+    months,
+  } = data;
+
+  const banks = await getAllBanks();
+
+  const results = [];
+
+  for (const bank of banks) {
+
+  }
+}
+
 export async function calculateReturns(data) {
   const {
     bank,
@@ -75,21 +92,7 @@ export async function calculateReturns(data) {
     months,
   } = data;
 
-export async function compareReturns(data) {
-  const banks = await getAllBanks();
-  const {
-  depositType,
-  customerType,
-  amount,
-  months,
-} = data;
 
-   const results = [];
-
-  for (const bank of banks) {
-
-  }
-}
 
   const interestRate = await getMatchingInterestRate({
     bank,
