@@ -1,10 +1,11 @@
-function CalculateButton({ onClick }) {
+function CalculateButton({ onClick, loading }) {
   return (
     <button
       onClick={onClick}
-      className="w-full rounded-xl bg-blue-600 py-4 text-white font-semibold hover:bg-blue-700 transition"
+      disabled={loading}
+      className="w-full rounded-xl bg-blue-600 p-4 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
     >
-      Calculate Returns
+      {loading ? "Calculating..." : "Calculate"}
     </button>
   );
 }

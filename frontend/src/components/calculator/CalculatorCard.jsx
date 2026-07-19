@@ -17,17 +17,20 @@ function CalculatorCard() {
   const [amount, setAmount] = useState("");
   const [months, setMonths] = useState("");
   const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleCalculate = async () => {
+const handleCalculate = async () => {
   if (!bank || !amount || !months) {
     alert("Please fill all required fields.");
     return;
   }
 
   try {
+    setLoading(true);
+
     const result = await calculateReturns({
       bank,
-      depositType: depositType === "FD" ? "FD" : "RD",
+      depositType,
       customerType:
         customerType === "Regular" ? "GENERAL" : "SENIOR",
       amount: Number(amount),
@@ -38,8 +41,10 @@ function CalculatorCard() {
   } catch (error) {
     alert(
       error.response?.data?.message ||
-        "Something went wrong."
+      "Something went wrong."
     );
+  } finally {
+    setLoading(false);
   }
 };
 
@@ -83,6 +88,7 @@ function CalculatorCard() {
 
         <CalculateButton
           onClick={handleCalculate}
+          loading={loading}
         />
 
       </div>
