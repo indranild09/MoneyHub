@@ -7,8 +7,8 @@ import TenureInput from "./TenureInput";
 import CustomerType from "./CustomerType";
 import CalculateButton from "./CalculateButton";
 import CalculatorResult from "./CalculatorResult";
-
-import { calculateReturns } from "../../api/calculator.api";
+import toast from "react-hot-toast";
+import useCalculator from "../../hooks/useCalculator";
 
 function CalculatorCard() {
   const [bank, setBank] = useState("");
@@ -16,38 +16,29 @@ function CalculatorCard() {
   const [customerType, setCustomerType] = useState("Regular");
   const [amount, setAmount] = useState("");
   const [months, setMonths] = useState("");
-  const [result, setResult] = useState(null);
-  const [loading, setLoading] = useState(false);
+const {
+  loading,
+  result,
+  calculate,
+} = useCalculator();
 
 const handleCalculate = async () => {
   if (!bank || !amount || !months) {
-    alert("Please fill all required fields.");
+    toast.error("Please fill all required fields.");
     return;
   }
 
-  try {
-    setLoading(true);
-
-    const result = await calculateReturns({
-      bank,
-      depositType,
-      customerType:
-        customerType === "Regular" ? "GENERAL" : "SENIOR",
-      amount: Number(amount),
-      months: Number(months),
-    });
-
-    setResult(result);
-  } catch (error) {
-    alert(
-      error.response?.data?.message ||
-      "Something went wrong."
-    );
-  } finally {
-    setLoading(false);
-  }
+  await calculate({
+    bank,
+    depositType,
+    customerType:
+      customerType === "Regular"
+        ? "GENERAL"
+        : "SENIOR",
+    amount: Number(amount),
+    months: Number(months),
+  });
 };
-
   return (
     <div className="w-full max-w-md rounded-3xl bg-white/80 backdrop-blur-xl shadow-2xl border border-white p-8">
 

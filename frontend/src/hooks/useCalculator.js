@@ -1,31 +1,40 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
+
+import { calculateReturns } from "../api/calculator.api";
 
 export default function useCalculator() {
-
-  const [bank, setBank] = useState("");
-
-  const [depositType, setDepositType] = useState("FD");
-
-  const [customerType, setCustomerType] = useState("Regular");
-
-  const [amount, setAmount] = useState("");
-
-  const [months, setMonths] = useState("");
-
+  const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
 
+  const calculate = async (payload) => {
+    try {
+      setLoading(true);
+      setResult(null);
+
+      const data = await calculateReturns(payload);
+
+      setResult(data);
+
+      toast.success("Calculation completed successfully!");
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message ||
+          "Something went wrong."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const reset = () => {
+    setResult(null);
+  };
+
   return {
-    bank,
-    setBank,
-    depositType,
-    setDepositType,
-    customerType,
-    setCustomerType,
-    amount,
-    setAmount,
-    months,
-    setMonths,
+    loading,
     result,
-    setResult,
+    calculate,
+    reset,
   };
 }
