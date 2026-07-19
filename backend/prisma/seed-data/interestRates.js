@@ -3,25 +3,24 @@ const interestRates = [
     bankShortName: "SBI",
     depositType: "FD",
     customerType: "GENERAL",
-    minMonths: 12,
-    maxMonths: 12,
-    interestRate: 6.8
+    minMonths: 6,
+    maxMonths: 11,
+    interestRate: 6.5,
   },
   {
-    bankShortName: "HDFC",
+    bankShortName: "SBI",
     depositType: "FD",
     customerType: "GENERAL",
     minMonths: 12,
-    maxMonths: 12,
-    interestRate: 7.0
+    maxMonths: 15,
+    interestRate: 6.8,
   },
   {
-    bankShortName: "ICICI",
+    bankShortName: "SBI",
     depositType: "FD",
     customerType: "GENERAL",
-    minMonths: 12,
-    maxMonths: 12,
-    interestRate: 7.0
-  }
+    minMonths: 16,
+    maxMonths: 24,
+    interestRate: 7.0,
+  },
 ];
-export default interestRates;
