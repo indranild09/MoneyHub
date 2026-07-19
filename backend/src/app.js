@@ -23,7 +23,6 @@ app.get("/health", (req, res) => {
 
 app.use("/api/v1", apiRoutes);
 
-app.use("/api/v1", apiRoutes);
 
 // 404 Handler
 app.use((req, res) => {
