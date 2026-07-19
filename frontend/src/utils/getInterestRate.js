@@ -11,7 +11,7 @@ function getInterestRate(
   if (!bank) return null;
 
   const type =
-    depositType === "Fixed Deposit" ? "fd" : "rd";
+    depositType === "FD" ? "fd" : "rd";
 
   const customer =
     customerType === "Senior Citizen"

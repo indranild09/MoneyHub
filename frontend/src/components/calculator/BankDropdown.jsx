@@ -1,10 +1,24 @@
-import banks from "../../data/banks";
+import { useEffect, useState } from "react";
+import { getBanks } from "../../api/bank.api";
 
 function BankDropdown({ value, onChange }) {
+  const [banks, setBanks] = useState([]);
+
+  useEffect(() => {
+    async function loadBanks() {
+      try {
+        const data = await getBanks();
+        setBanks(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    loadBanks();
+  }, []);
 
   return (
     <div>
-
       <label className="block mb-2 font-semibold text-slate-700">
         Select Bank
       </label>
@@ -17,13 +31,14 @@ function BankDropdown({ value, onChange }) {
         <option value="">Choose a Bank</option>
 
         {banks.map((bank) => (
-          <option key={bank.id} value={bank.name}>
+          <option
+            key={bank.id}
+            value={bank.shortName}
+          >
             {bank.name}
           </option>
         ))}
-
       </select>
-
     </div>
   );
 }

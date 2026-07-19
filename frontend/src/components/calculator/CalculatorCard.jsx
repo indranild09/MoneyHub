@@ -1,5 +1,5 @@
 import { useState } from "react";
-import getInterestRate from "../../utils/getInterestRate";
+
 import BankDropdown from "./BankDropdown";
 import DepositTypeToggle from "./DepositTypeToggle";
 import AmountInput from "./AmountInput";
@@ -8,7 +8,7 @@ import CustomerType from "./CustomerType";
 import CalculateButton from "./CalculateButton";
 import CalculatorResult from "./CalculatorResult";
 
-import { calculateFD, calculateRD } from "../../utils/calculator";
+import { calculateReturns } from "../../api/calculator.api";
 
 function CalculatorCard() {
   const [bank, setBank] = useState("");
@@ -18,43 +18,30 @@ function CalculatorCard() {
   const [months, setMonths] = useState("");
   const [result, setResult] = useState(null);
 
-  const handleCalculate = () => {
-    if (!amount || !months) {
-      alert("Please enter amount and tenure");
-      return;
-    }
-const rate = getInterestRate(
-  bank,
-  depositType,
-  customerType,
-  Number(months)
-);
+  const handleCalculate = async () => {
+  if (!bank || !amount || !months) {
+    alert("Please fill all required fields.");
+    return;
+  }
 
-if (!rate) {
-  alert("No interest rate found for this tenure.");
-  return;
-}
-    // Temporary interest rate
-    //const rate = customerType === "Senior Citizen" ? 7.5 : 7;
+  try {
+    const result = await calculateReturns({
+      bank,
+      depositType: depositType === "FD" ? "FD" : "RD",
+      customerType:
+        customerType === "Regular" ? "GENERAL" : "SENIOR",
+      amount: Number(amount),
+      months: Number(months),
+    });
 
-    if (depositType === "Fixed Deposit") {
-      setResult(
-        calculateFD(
-          Number(amount),
-          rate,
-          Number(months)
-        )
-      );
-    } else {
-      setResult(
-        calculateRD(
-          Number(amount),
-          rate,
-          Number(months)
-        )
-      );
-    }
-  };
+    setResult(result);
+  } catch (error) {
+    alert(
+      error.response?.data?.message ||
+        "Something went wrong."
+    );
+  }
+};
 
   return (
     <div className="w-full max-w-md rounded-3xl bg-white/80 backdrop-blur-xl shadow-2xl border border-white p-8">

@@ -22,7 +22,7 @@ export function calculateDeposit({
   }
 
   const result =
-    depositType === "Fixed Deposit"
+    depositType === "FD"
       ? calculateFD(Number(amount), rate, Number(months))
       : calculateRD(Number(amount), rate, Number(months));
 
