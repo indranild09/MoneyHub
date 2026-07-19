@@ -1,5 +1,5 @@
 import { getMatchingInterestRate } from "./interestRate.service.js";
-
+import ApiError from "../utils/ApiError.js";
 function validateInput(data) {
   const {
     bank,
@@ -10,23 +10,23 @@ function validateInput(data) {
   } = data;
 
   if (!bank) {
-    throw new Error("Bank is required");
+    throw new ApiError(400, "Bank is required");
   }
 
   if (!depositType) {
-    throw new Error("Deposit type is required");
+    throw new ApiError("Deposit type is required");
   }
 
   if (!customerType) {
-    throw new Error("Customer type is required");
+    throw new ApiError("Customer type is required");
   }
 
   if (!amount || amount <= 0) {
-    throw new Error("Amount must be greater than 0");
+    throw new ApiError("Amount must be greater than 0");
   }
 
   if (!months || months <= 0) {
-    throw new Error("Months must be greater than 0");
+    throw new ApiError("Months must be greater than 0");
   }
 }
 
@@ -84,7 +84,7 @@ export async function calculateReturns(data) {
   });
 
   if (!interestRate) {
-    throw new Error("Interest rate not found");
+    throw new ApiError(404, "Interest rate not found");
   }
 
   let calculation;
@@ -102,7 +102,7 @@ if (depositType === "FD") {
     months
   );
 } else {
-  throw new Error("Invalid deposit type");
+  throw new ApiError(400, "Invalid deposit type");
 }
 
 const { interestEarned, maturityAmount } = calculation;
