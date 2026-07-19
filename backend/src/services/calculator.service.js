@@ -1,5 +1,6 @@
 import { getMatchingInterestRate } from "./interestRate.service.js";
 import ApiError from "../utils/ApiError.js";
+import { getAllBanks } from "./bank.service.js";
 function validateInput(data) {
   const {
     bank,
@@ -74,7 +75,21 @@ export async function calculateReturns(data) {
     months,
   } = data;
 
-  validateInput(data);
+export async function compareReturns(data) {
+  const banks = await getAllBanks();
+  const {
+  depositType,
+  customerType,
+  amount,
+  months,
+} = data;
+
+   const results = [];
+
+  for (const bank of banks) {
+
+  }
+}
 
   const interestRate = await getMatchingInterestRate({
     bank,
