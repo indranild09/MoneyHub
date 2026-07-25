@@ -14,25 +14,30 @@ export default function useCalculator() {
   const [comparison, setComparison] = useState([]);
 
   const calculate = async (payload) => {
-    try {
-      setLoading(true);
+  try {
+    console.log("Sending payload:", payload);
 
-      setResult(null);
+    setLoading(true);
+    setResult(null);
 
-      const data = await calculateReturns(payload);
+    const data = await calculateReturns(payload);
 
-      setResult(data);
+    console.log("Response:", data);
 
-      toast.success("Calculation completed successfully!");
-    } catch (error) {
-      toast.error(
-        error.response?.data?.message ||
-          "Something went wrong."
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+    setResult(data);
+
+    toast.success("Calculation completed successfully!");
+  } catch (error) {
+    console.log("Error Response:", error.response);
+
+    toast.error(
+      error.response?.data?.message ||
+      "Something went wrong."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
   const compare = async (payload) => {
     try {

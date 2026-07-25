@@ -56,36 +56,36 @@ export async function getMatchingInterestRate(filters) {
     months,
   } = filters;
 
-  return prisma.interestRate.findFirst({
+  console.log("===== FILTERS =====");
+  console.log({
+    bank,
+    depositType,
+    customerType,
+    months,
+  });
+
+  const record = await prisma.interestRate.findFirst({
     where: {
       bank: {
         shortName: bank.toUpperCase(),
       },
       depositType: depositType.toUpperCase(),
       customerType: customerType.toUpperCase(),
-
       minMonths: {
         lte: months,
       },
-
       maxMonths: {
         gte: months,
       },
-
       effectiveTo: null,
     },
-
     include: {
-      bank: {
-        select: {
-          id: true,
-          name: true,
-          shortName: true,
-          logoUrl: true,
-          website: true,
-        },
-      },
+      bank: true,
     },
   });
-}
 
+  console.log("===== MATCHED RECORD =====");
+  console.log(record);
+
+  return record;
+}

@@ -17,6 +17,7 @@ function CalculatorCard() {
   const [depositType, setDepositType] = useState("FD");
   const [customerType, setCustomerType] = useState("Regular");
   const [amount, setAmount] = useState("");
+
   const [months, setMonths] = useState("");
 
   const {
@@ -33,14 +34,21 @@ function CalculatorCard() {
       return;
     }
 
-    await calculate({
+    const payload = {
       bank,
       depositType,
       customerType:
-        customerType === "Regular" ? "GENERAL" : "SENIOR",
+        customerType === "Regular"
+          ? "GENERAL"
+          : "SENIOR",
       amount: Number(amount),
       months: Number(months),
-    });
+    };
+
+    console.log("========== CALCULATE ==========");
+    console.log("PAYLOAD:", payload);
+
+    await calculate(payload);
   };
 
   const handleCompare = async () => {
@@ -49,13 +57,20 @@ function CalculatorCard() {
       return;
     }
 
-    await compare({
+    const payload = {
       depositType,
       customerType:
-        customerType === "Regular" ? "GENERAL" : "SENIOR",
+        customerType === "Regular"
+          ? "GENERAL"
+          : "SENIOR",
       amount: Number(amount),
       months: Number(months),
-    });
+    };
+
+    console.log("========== COMPARE ==========");
+    console.log("PAYLOAD:", payload);
+
+    await compare(payload);
   };
 
   return (
