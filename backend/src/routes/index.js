@@ -10,4 +10,5 @@ router.use("/banks", bankRoutes);
 router.use("/interest-rates", interestRateRoutes);
 router.use("/calculator", calculatorRoutes);
 router.use("/health", healthRoutes);
+
 export default router;

@@ -1,6 +1,8 @@
 import { Router } from "express";
 
 import validateCalculatorRequest from "../middleware/validateCalculatorRequest.js";
+import validateCompareRequest from "../middleware/validateCompareRequest.js";
+
 import {
   calculateReturnsController,
   compareReturnsController,
@@ -16,7 +18,7 @@ router.post(
 
 router.post(
   "/compare",
-  validateCalculatorRequest,
+  validateCompareRequest,
   compareReturnsController
 );
 
