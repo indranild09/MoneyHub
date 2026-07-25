@@ -1,38 +1,136 @@
-function LatestRates() {
+import { useEffect, useState } from "react";
+import { getInterestRates } from "../api/interestRate.api";
 
-  const rates = [
-    { bank: "SBI", rate: "6.70%" },
-    { bank: "HDFC", rate: "6.85%" },
-    { bank: "Axis", rate: "6.90%" },
-    { bank: "IDFC FIRST", rate: "7.25%" },
-  ];
+function LatestRates() {
+  const [rates, setRates] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadRates() {
+      try {
+        const data = await getInterestRates();
+
+        // Show first 4 rates for now
+        setRates(data.slice(0, 4));
+      } catch (error) {
+        console.error("Failed to load interest rates:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadRates();
+  }, []);
+
+  if (loading) {
+    return (
+      <section id="rates" className="bg-slate-50 py-24">
+        <div className="mx-auto max-w-7xl px-6 text-center">
+          <p className="text-slate-500">Loading latest interest rates...</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
-    <section className="max-w-7xl mx-auto px-6 py-20">
+    <section id="rates" className="bg-slate-50 py-24">
+      <div className="mx-auto max-w-7xl px-6">
 
-      <h2 className="text-4xl font-bold mb-10">
-        Latest FD Interest Rates
-      </h2>
+        <div className="mb-14 text-center">
+          <span className="rounded-full bg-cyan-100 px-4 py-2 text-sm font-semibold text-cyan-700">
+            Latest Interest Rates
+          </span>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <h2 className="mt-5 text-4xl font-bold text-slate-900">
+            Compare Current FD Interest Rates
+          </h2>
 
-        {rates.map((bank) => (
-          <div
-            key={bank.bank}
-            className="bg-white rounded-xl shadow-md p-6"
-          >
-            <h3 className="text-xl font-semibold">
-              {bank.bank}
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-500">
+            Live data fetched directly from the MoneyHub backend.
+          </p>
+        </div>
+
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+
+  {rates.map((rate) => (
+
+    <div
+      key={rate.id}
+      className="group rounded-3xl border border-slate-200 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
+    >
+      {/* Top */}
+
+      <div className="flex items-start justify-between">
+
+        <div className="flex items-center gap-4">
+
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-cyan-100 text-lg font-bold text-cyan-700">
+            {rate.bank.shortName.charAt(0)}
+          </div>
+
+          <div>
+            <h3 className="font-bold text-slate-900">
+              {rate.bank.name}
             </h3>
 
-            <p className="text-3xl text-blue-600 mt-4">
-              {bank.rate}
+            <p className="text-sm text-slate-500">
+              {rate.customerType}
             </p>
           </div>
-        ))}
+
+        </div>
+
+        <span className="rounded-full bg-emerald-100 px-3 py-1 text-sm font-semibold text-emerald-700">
+          {rate.depositType}
+        </span>
 
       </div>
 
+      {/* Rate */}
+
+      <div className="mt-8">
+
+        <p className="text-sm text-slate-500">
+          Interest Rate
+        </p>
+
+        <h2 className="mt-2 text-5xl font-extrabold text-cyan-600">
+          {rate.interestRate}%
+        </h2>
+
+      </div>
+
+      {/* Bottom */}
+
+      <div className="mt-8 flex items-center justify-between text-sm">
+
+        <div>
+          <p className="text-slate-500">
+            Tenure
+          </p>
+
+          <p className="font-semibold">
+            {rate.minMonths} Months
+          </p>
+        </div>
+
+        <a
+          href={rate.bank.website}
+          target="_blank"
+          rel="noreferrer"
+          className="font-semibold text-cyan-600 hover:text-cyan-700"
+        >
+          Visit →
+        </a>
+
+      </div>
+
+    </div>
+
+  ))}
+
+</div>
+      </div>
     </section>
   );
 }
