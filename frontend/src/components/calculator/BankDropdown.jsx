@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getBanks } from "../../api/bank.api";
+import SearchableDropdown from "../ui/SearchableDropdown";
 
 function BankDropdown({ value, onChange }) {
   const [banks, setBanks] = useState([]);
@@ -8,7 +9,13 @@ function BankDropdown({ value, onChange }) {
     async function loadBanks() {
       try {
         const data = await getBanks();
-        setBanks(data);
+
+        const formattedBanks = data.map((bank) => ({
+          value: bank.shortName,
+          label: bank.name,
+        }));
+
+        setBanks(formattedBanks);
       } catch (error) {
         console.error(error);
       }
@@ -19,26 +26,16 @@ function BankDropdown({ value, onChange }) {
 
   return (
     <div>
-      <label className="block mb-2 font-semibold text-slate-700">
+      <label className="mb-2 block font-semibold text-slate-700">
         Select Bank
       </label>
 
-      <select
+      <SearchableDropdown
+        options={banks}
         value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-xl border border-slate-300 bg-white p-4 text-slate-900 outline-none transition focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
-      >
-        <option value="">Choose a Bank</option>
-
-        {banks.map((bank) => (
-          <option
-            key={bank.id}
-            value={bank.shortName}
-          >
-            {bank.name}
-          </option>
-        ))}
-      </select>
+        onChange={onChange}
+        placeholder="Search a bank..."
+      />
     </div>
   );
 }
