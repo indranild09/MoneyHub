@@ -88,3 +88,17 @@ export async function getMatchingInterestRate(filters) {
     },
   });
 }
+
+export async function calculateReturnsController(req, res, next) {
+  try {
+    console.log(req.body);
+
+    const result = await calculateReturns(req.body);
+
+    return res.status(200).json(
+      successResponse(result, "Calculation completed successfully")
+    );
+  } catch (error) {
+    next(error);
+  }
+}
