@@ -1,15 +1,22 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-import { calculateReturns } from "../api/calculator.api";
+import {
+  calculateReturns,
+  compareReturns,
+} from "../api/calculator.api";
 
 export default function useCalculator() {
   const [loading, setLoading] = useState(false);
+
   const [result, setResult] = useState(null);
+
+  const [comparison, setComparison] = useState([]);
 
   const calculate = async (payload) => {
     try {
       setLoading(true);
+
       setResult(null);
 
       const data = await calculateReturns(payload);
@@ -27,14 +34,41 @@ export default function useCalculator() {
     }
   };
 
+  const compare = async (payload) => {
+    try {
+      setLoading(true);
+
+      setComparison([]);
+
+      const data = await compareReturns(payload);
+
+      setComparison(data);
+
+      toast.success("Comparison completed successfully!");
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message ||
+          "Something went wrong."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const reset = () => {
     setResult(null);
+    setComparison([]);
   };
 
   return {
     loading,
+
     result,
+    comparison,
+
     calculate,
+    compare,
+
     reset,
   };
 }

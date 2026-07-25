@@ -1,7 +1,10 @@
 import api from "./axios";
 
-export const calculateReturns = async (payload) => {
-  const response = await api.post("/calculator", payload);
+export async function compareReturns(data) {
+  const response = await api.post(
+    "/calculator/compare",
+    data
+  );
 
   return response.data.data;
-};
+}
