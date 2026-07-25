@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import ComparisonTable from "./ComparisonTable";
 import BankDropdown from "./BankDropdown";
 import DepositTypeToggle from "./DepositTypeToggle";
 import AmountInput from "./AmountInput";
@@ -19,9 +19,26 @@ function CalculatorCard() {
 const {
   loading,
   result,
+  comparison,
   calculate,
+  compare,
 } = useCalculator();
+const handleCompare = async () => {
+  if (!amount || !months) {
+    toast.error("Please fill all required fields.");
+    return;
+  }
 
+  await compare({
+    depositType,
+    customerType:
+      customerType === "Regular"
+        ? "GENERAL"
+        : "SENIOR",
+    amount: Number(amount),
+    months: Number(months),
+  });
+};
 const handleCalculate = async () => {
   if (!bank || !amount || !months) {
     toast.error("Please fill all required fields.");
@@ -82,10 +99,18 @@ const handleCalculate = async () => {
           loading={loading}
         />
 
+        <button
+  onClick={handleCompare}
+  disabled={loading}
+  className="w-full rounded-xl border border-blue-600 bg-white py-3 px-4 font-semibold text-blue-600 transition hover:bg-blue-50 disabled:opacity-50"
+>
+  {loading ? "Comparing..." : "Compare All Banks"}
+</button>
+
       </div>
 
       <CalculatorResult result={result} />
-
+      <ComparisonTable comparison={comparison} />
     </div>
   );
 }
