@@ -1,35 +1,6 @@
 import { getMatchingInterestRate } from "./interestRate.service.js";
-import ApiError from "../utils/ApiError.js";
 import { getAllBanks } from "./bank.service.js";
-function validateInput(data) {
-  const {
-    bank,
-    depositType,
-    customerType,
-    amount,
-    months,
-  } = data;
-
-  if (!bank) {
-    throw new ApiError(400, "Bank is required");
-  }
-
-  if (!depositType) {
-    throw new ApiError("Deposit type is required");
-  }
-
-  if (!customerType) {
-    throw new ApiError("Customer type is required");
-  }
-
-  if (!amount || amount <= 0) {
-    throw new ApiError("Amount must be greater than 0");
-  }
-
-  if (!months || months <= 0) {
-    throw new ApiError("Months must be greater than 0");
-  }
-}
+import ApiError from "../utils/ApiError.js";
 
 function calculateFD(amount, annualRate, months) {
   const rate = annualRate / 100;
@@ -66,6 +37,72 @@ function calculateRD(monthlyDeposit, annualRate, months) {
   };
 }
 
+function calculateDeposit(
+  depositType,
+  amount,
+  annualRate,
+  months
+) {
+  if (depositType === "FD") {
+    return calculateFD(amount, annualRate, months);
+  }
+
+  if (depositType === "RD") {
+    return calculateRD(amount, annualRate, months);
+  }
+
+  throw new ApiError(400, "Invalid deposit type");
+}
+
+export async function calculateReturns(data) {
+  const {
+    bank,
+    depositType,
+    customerType,
+    amount,
+    months,
+  } = data;
+
+  const interestRate = await getMatchingInterestRate({
+    bank,
+    depositType,
+    customerType,
+    months,
+  });
+
+  if (!interestRate) {
+    throw new ApiError(404, "Interest rate not found");
+  }
+
+  const calculation = calculateDeposit(
+    depositType,
+    amount,
+    interestRate.interestRate,
+    months
+  );
+
+  return {
+    bank: interestRate.bank.name,
+    depositType,
+    customerType,
+    principal:
+      depositType === "FD"
+        ? amount
+        : amount * months,
+
+    monthlyDeposit:
+      depositType === "RD"
+        ? amount
+        : null,
+
+    tenureMonths: months,
+    interestRate: interestRate.interestRate,
+
+    interestEarned: calculation.interestEarned,
+    maturityAmount: calculation.maturityAmount,
+  };
+}
+
 export async function compareReturns(data) {
   const {
     depositType,
@@ -79,62 +116,55 @@ export async function compareReturns(data) {
   const results = [];
 
   for (const bank of banks) {
+    const interestRate =
+      await getMatchingInterestRate({
+        bank: bank.shortName,
+        depositType,
+        customerType,
+        months,
+      });
 
+    if (!interestRate) {
+      continue;
+    }
+
+    const calculation = calculateDeposit(
+      depositType,
+      amount,
+      interestRate.interestRate,
+      months
+    );
+
+    results.push({
+      bank: bank.name,
+      shortName: bank.shortName,
+
+      interestRate:
+        interestRate.interestRate,
+
+      principal:
+        depositType === "FD"
+          ? amount
+          : amount * months,
+
+      interestEarned:
+        calculation.interestEarned,
+
+      maturityAmount:
+        calculation.maturityAmount,
+    });
   }
-}
 
-export async function calculateReturns(data) {
-  const {
-    bank,
-    depositType,
-    customerType,
-    amount,
-    months,
-  } = data;
-
-
-
-  const interestRate = await getMatchingInterestRate({
-    bank,
-    depositType,
-    customerType,
-    months,
-  });
-
-  if (!interestRate) {
-    throw new ApiError(404, "Interest rate not found");
+  if (results.length === 0) {
+    throw new ApiError(
+      404,
+      "No matching interest rates found."
+    );
   }
 
-  let calculation;
-
-if (depositType === "FD") {
-  calculation = calculateFD(
-    amount,
-    interestRate.interestRate,
-    months
+  results.sort(
+    (a, b) => b.maturityAmount - a.maturityAmount
   );
-} else if (depositType === "RD") {
-  calculation = calculateRD(
-    amount,
-    interestRate.interestRate,
-    months
-  );
-} else {
-  throw new ApiError(400, "Invalid deposit type");
-}
 
-const { interestEarned, maturityAmount } = calculation;
-
-  return {
-    bank: interestRate.bank.name,
-    depositType,
-    customerType,
-    principal: depositType === "FD" ? amount : amount * months,
-
-monthlyDeposit: depositType === "RD" ? amount : null,
-    tenureMonths: months,
-    interestRate: interestRate.interestRate,
-    interestEarned: Number(interestEarned.toFixed(2)),
-    maturityAmount: Number(maturityAmount.toFixed(2)),
-  };
+  return results;
 }
