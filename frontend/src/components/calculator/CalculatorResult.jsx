@@ -66,7 +66,7 @@ function CalculatorResult({ result }) {
           </span>
 
           <span className="font-bold text-emerald-600">
-            {formatCurrency(result.interest)}
+            {formatCurrency(result.interestEarned)}
           </span>
 
         </div>
@@ -82,7 +82,7 @@ function CalculatorResult({ result }) {
         </p>
 
         <h2 className="mt-2 text-4xl font-extrabold">
-          {formatCurrency(result.maturity)}
+          {formatCurrency(result.maturityAmount)}
         </h2>
 
       </div>
