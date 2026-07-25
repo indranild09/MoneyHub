@@ -1,93 +1,75 @@
 import CalculatorCard from "../calculator/CalculatorCard";
 
 function Hero() {
-    return (
-        <section className="relative overflow-hidden bg-linear-to-br from-slate-50 via-blue-50 to-indigo-100">
+  return (
+    <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950">
 
-            {/* Background Blur */}
-            <div className="absolute -top-40 -left-32 h-96 w-96 rounded-full bg-blue-300/30 blur-3xl"></div>
-            <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-cyan-300/20 blur-3xl"></div>
+      <div className="absolute inset-0 opacity-20">
+        <div className="absolute top-20 left-10 h-72 w-72 rounded-full bg-cyan-500 blur-3xl"></div>
+        <div className="absolute bottom-10 right-10 h-72 w-72 rounded-full bg-emerald-500 blur-3xl"></div>
+      </div>
 
-            <div className="relative max-w-7xl mx-auto px-6 py-24">
+      <div className="relative max-w-7xl mx-auto px-6 pt-36 pb-24">
 
-                <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
 
-                    {/* Left Section */}
-                    <div>
+          {/* Left */}
 
-                        <span className="inline-flex items-center rounded-full bg-blue-100 text-blue-700 px-4 py-2 text-sm font-semibold">
-                            🇮🇳 Compare 80+ Indian Banks
-                        </span>
+          <div className="text-white">
 
-                        <h1 className="mt-8 text-5xl lg:text-7xl font-extrabold leading-tight text-slate-900">
-                            Find the
-                            <span className="text-blue-600"> Highest </span>
-                            Deposit Returns.
-                        </h1>
+            <span className="inline-flex rounded-full bg-cyan-500/20 px-4 py-2 text-sm text-cyan-300 border border-cyan-400/20">
+              India's Smart FD & RD Calculator
+            </span>
 
-                        <p className="mt-8 text-lg text-slate-600 leading-8 max-w-xl">
-                            Compare Fixed Deposit and Recurring Deposit interest rates across
-                            India's leading banks with live rates and instant calculations.
-                        </p>
+            <h1 className="mt-8 text-5xl lg:text-6xl font-extrabold leading-tight">
+              Compare
+              <span className="text-cyan-400"> Bank Returns </span>
+              in Seconds
+            </h1>
 
-                        <div className="mt-10 flex gap-4 flex-wrap">
+            <p className="mt-8 text-lg text-slate-300 leading-8">
+              Instantly calculate FD and RD maturity amounts, compare returns
+              from multiple banks, and choose the best investment option—all in
+              one place.
+            </p>
 
-                            <button className="bg-blue-600 hover:bg-blue-700 transition px-8 py-4 rounded-2xl text-white font-semibold shadow-lg">
-                                Start Comparing
-                            </button>
+            <button className="mt-10 rounded-xl bg-cyan-500 px-8 py-4 font-semibold hover:bg-cyan-400 transition">
+              Start Calculating
+            </button>
 
-                            <button className="border border-slate-300 hover:bg-white px-8 py-4 rounded-2xl font-semibold">
-                                Explore Rates
-                            </button>
+            <div className="grid grid-cols-3 gap-8 mt-16">
 
-                        </div>
+              <div>
+                <h2 className="text-3xl font-bold text-cyan-400">80+</h2>
+                <p className="text-slate-400">Banks</p>
+              </div>
 
-                        <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-6">
+              <div>
+                <h2 className="text-3xl font-bold text-cyan-400">100%</h2>
+                <p className="text-slate-400">Accurate</p>
+              </div>
 
-                            <div>
-                                <h2 className="text-3xl font-bold text-slate-900">80+</h2>
-                                <p className="text-slate-500">Banks</p>
-                            </div>
-
-                            <div>
-                                <h2 className="text-3xl font-bold text-slate-900">Daily</h2>
-                                <p className="text-slate-500">Updates</p>
-                            </div>
-
-                            <div>
-                                <h2 className="text-3xl font-bold text-slate-900">100%</h2>
-                                <p className="text-slate-500">Free</p>
-                            </div>
-
-                            <div>
-                                <h2 className="text-3xl font-bold text-slate-900">Instant</h2>
-                                <p className="text-slate-500">Results</p>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    {/* Right Section */}
-
-
-
-                </div>
+              <div>
+                <h2 className="text-3xl font-bold text-cyan-400">24×7</h2>
+                <p className="text-slate-400">Available</p>
+              </div>
 
             </div>
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
 
-                <div>
-                    {/* Left Content */}
-                </div>
+          </div>
 
-                <div className="flex justify-center">
-                    <CalculatorCard />
-                </div>
+          {/* Right */}
 
-            </div>
-        </section>
-    );
+          <div className="rounded-3xl bg-white/10 backdrop-blur-xl border border-white/10 p-6 shadow-2xl">
+            <CalculatorCard />
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+  );
 }
 
 export default Hero;

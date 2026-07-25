@@ -1,5 +1,8 @@
 import { useState } from "react";
-import ComparisonTable from "./ComparisonTable";
+import toast from "react-hot-toast";
+
+import useCalculator from "../../hooks/useCalculator";
+
 import BankDropdown from "./BankDropdown";
 import DepositTypeToggle from "./DepositTypeToggle";
 import AmountInput from "./AmountInput";
@@ -7,8 +10,7 @@ import TenureInput from "./TenureInput";
 import CustomerType from "./CustomerType";
 import CalculateButton from "./CalculateButton";
 import CalculatorResult from "./CalculatorResult";
-import toast from "react-hot-toast";
-import useCalculator from "../../hooks/useCalculator";
+import ComparisonTable from "./ComparisonTable";
 
 function CalculatorCard() {
   const [bank, setBank] = useState("");
@@ -16,58 +18,69 @@ function CalculatorCard() {
   const [customerType, setCustomerType] = useState("Regular");
   const [amount, setAmount] = useState("");
   const [months, setMonths] = useState("");
-const {
-  loading,
-  result,
-  comparison,
-  calculate,
-  compare,
-} = useCalculator();
-const handleCompare = async () => {
-  if (!amount || !months) {
-    toast.error("Please fill all required fields.");
-    return;
-  }
 
-  await compare({
-    depositType,
-    customerType:
-      customerType === "Regular"
-        ? "GENERAL"
-        : "SENIOR",
-    amount: Number(amount),
-    months: Number(months),
-  });
-};
-const handleCalculate = async () => {
-  if (!bank || !amount || !months) {
-    toast.error("Please fill all required fields.");
-    return;
-  }
+  const {
+    loading,
+    result,
+    comparison,
+    calculate,
+    compare,
+  } = useCalculator();
 
-  await calculate({
-    bank,
-    depositType,
-    customerType:
-      customerType === "Regular"
-        ? "GENERAL"
-        : "SENIOR",
-    amount: Number(amount),
-    months: Number(months),
-  });
-};
+  const handleCalculate = async () => {
+    if (!bank || !amount || !months) {
+      toast.error("Please fill all required fields.");
+      return;
+    }
+
+    await calculate({
+      bank,
+      depositType,
+      customerType:
+        customerType === "Regular" ? "GENERAL" : "SENIOR",
+      amount: Number(amount),
+      months: Number(months),
+    });
+  };
+
+  const handleCompare = async () => {
+    if (!amount || !months) {
+      toast.error("Please fill all required fields.");
+      return;
+    }
+
+    await compare({
+      depositType,
+      customerType:
+        customerType === "Regular" ? "GENERAL" : "SENIOR",
+      amount: Number(amount),
+      months: Number(months),
+    });
+  };
+
   return (
-    <div className="w-full max-w-md rounded-3xl bg-white/80 backdrop-blur-xl shadow-2xl border border-white p-8">
+    <div className="rounded-3xl border border-slate-200 bg-white/95 p-8 shadow-2xl backdrop-blur">
 
-      <h2 className="text-2xl font-bold">
-        Quick Calculator
-      </h2>
+      {/* Header */}
 
-      <p className="text-slate-500 mt-2">
-        Compare returns instantly.
-      </p>
+      <div className="mb-8">
+        <span className="text-sm font-semibold uppercase tracking-widest text-cyan-600">
+          Investment Calculator
+        </span>
 
-      <div className="mt-8 space-y-5">
+        <h2 className="mt-2 text-3xl font-bold text-slate-900">
+          FD & RD Calculator
+        </h2>
+
+        <p className="mt-3 text-slate-500">
+          Calculate maturity amount instantly using the latest bank interest
+          rates and compare returns across banks.
+        </p>
+      </div>
+
+      {/* Form */}
+
+      <div className="space-y-6">
 
         <BankDropdown
           value={bank}
@@ -95,22 +108,36 @@ const handleCalculate = async () => {
         />
 
         <CalculateButton
-          onClick={handleCalculate}
           loading={loading}
+          onClick={handleCalculate}
         />
 
         <button
-  onClick={handleCompare}
-  disabled={loading}
-  className="w-full rounded-xl border border-blue-600 bg-white py-3 px-4 font-semibold text-blue-600 transition hover:bg-blue-50 disabled:opacity-50"
->
-  {loading ? "Comparing..." : "Compare All Banks"}
-</button>
+          onClick={handleCompare}
+          disabled={loading}
+          className="w-full rounded-2xl border border-slate-300 bg-white py-4 font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {loading ? "Comparing..." : "Compare All Banks"}
+        </button>
 
       </div>
 
-      <CalculatorResult result={result} />
-      <ComparisonTable comparison={comparison} />
+      {/* Result */}
+
+      {result && (
+        <div className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 p-6">
+          <CalculatorResult result={result} />
+        </div>
+      )}
+
+      {/* Comparison */}
+
+      {comparison?.length > 0 && (
+        <div className="mt-8">
+          <ComparisonTable comparison={comparison} />
+        </div>
+      )}
+
     </div>
   );
 }

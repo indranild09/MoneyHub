@@ -1,79 +1,113 @@
-import { Link } from "react-router-dom";
-import { FiSearch, FiMenu } from "react-icons/fi";
+import { useState, useEffect } from "react";
 
 function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const navLinks = [
+    { label: "Home", href: "#" },
+    { label: "Calculator", href: "#calculator" },
+    { label: "Latest Rates", href: "#rates" },
+    { label: "Compare", href: "#compare" },
+  ];
+
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-slate-200">
-      <div className="max-w-7xl mx-auto h-20 px-6 flex items-center justify-between">
+    <header
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-slate-950/80 backdrop-blur-xl border-b border-white/10 shadow-lg"
+          : "bg-transparent"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
 
         {/* Logo */}
-        <Link
-          to="/"
-          className="text-3xl font-extrabold tracking-tight"
-        >
-          <span className="text-slate-900">Money</span>
-          <span className="text-blue-600">Hub</span>
-        </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-8 text-slate-600 font-medium">
+        <a href="#" className="flex items-center gap-3">
+          <div className="h-11 w-11 rounded-xl bg-cyan-500 flex items-center justify-center text-white font-bold text-xl">
+            ₹
+          </div>
 
-          <Link
-            to="/"
-            className="hover:text-blue-600 transition duration-200"
-          >
-            Home
-          </Link>
+          <div>
+            <h1 className="text-white font-bold text-xl">
+              MoneyHub
+            </h1>
 
-          <Link
-            to="/"
-            className="hover:text-blue-600 transition duration-200"
-          >
-            FD Rates
-          </Link>
+            <p className="text-xs text-slate-400">
+              Compare • Invest • Grow
+            </p>
+          </div>
+        </a>
 
-          <Link
-            to="/"
-            className="hover:text-blue-600 transition duration-200"
-          >
-            RD Rates
-          </Link>
+        {/* Desktop */}
 
-          <Link
-            to="/compare"
-            className="hover:text-blue-600 transition duration-200"
-          >
-            Compare
-          </Link>
-
-          <Link
-            to="/"
-            className="hover:text-blue-600 transition duration-200"
-          >
-            Calculators
-          </Link>
-
+        <nav className="hidden md:flex items-center gap-10">
+          {navLinks.map((item) => (
+            <a
+              key={item.label}
+              href={item.href}
+              className="text-slate-300 hover:text-cyan-400 transition font-medium"
+            >
+              {item.label}
+            </a>
+          ))}
         </nav>
 
-        {/* Right Side */}
-        <div className="flex items-center gap-3">
+        {/* GitHub Button */}
 
-          <button className="hidden md:flex w-11 h-11 items-center justify-center rounded-xl border border-slate-200 hover:bg-slate-100 transition">
-            <FiSearch size={20} />
+        <div className="hidden md:flex items-center gap-4">
+          <button className="rounded-xl bg-cyan-500 px-5 py-2.5 text-white font-semibold hover:bg-cyan-400 transition">
+            GitHub
           </button>
-
-          <button className="hidden md:block bg-blue-600 hover:bg-blue-700 transition text-white px-6 py-3 rounded-xl font-semibold shadow-md">
-            Login
-          </button>
-
-          {/* Mobile Menu */}
-          <button className="lg:hidden w-11 h-11 flex items-center justify-center rounded-xl border border-slate-200">
-            <FiMenu size={22} />
-          </button>
-
         </div>
 
+        {/* Mobile Button */}
+
+        <button
+          className="md:hidden text-white text-2xl"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          ☰
+        </button>
+
       </div>
+
+      {/* Mobile Menu */}
+
+      {menuOpen && (
+        <div className="md:hidden bg-slate-950 border-t border-white/10">
+
+          <div className="flex flex-col p-6 gap-5">
+
+            {navLinks.map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                onClick={() => setMenuOpen(false)}
+                className="text-slate-300 hover:text-cyan-400"
+              >
+                {item.label}
+              </a>
+            ))}
+
+            <button className="rounded-xl bg-cyan-500 py-3 font-semibold">
+              GitHub
+            </button>
+
+          </div>
+
+        </div>
+      )}
     </header>
   );
 }
