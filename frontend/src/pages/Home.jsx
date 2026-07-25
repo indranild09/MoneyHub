@@ -1,12 +1,12 @@
 import Hero from "../components/home/Hero";
 import LatestRates from "../components/LatestRates";
 import Footer from "../components/Footer";
-
+import DashboardCards from "../components/dashboard/DashboardCards";
 function Home() {
   return (
     <>
       <Hero />
-
+      <DashboardCards />
       <section className="max-w-7xl mx-auto px-6 py-20">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
 
