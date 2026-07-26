@@ -11,9 +11,12 @@ function BankDropdown({ value, onChange }) {
         const data = await getBanks();
 
         const formattedBanks = data.map((bank) => ({
-          value: bank.shortName,
-          label: bank.name,
-        }));
+  value: bank.shortName,
+  label: bank.name,
+  logoUrl: bank.logoUrl,
+  website: bank.website,
+  id: bank.id,
+}));
 
         setBanks(formattedBanks);
       } catch (error) {
