@@ -1,3 +1,5 @@
+import BankLogo from "../ui/BankLogo";
+
 function CalculatorResult({ result }) {
   if (!result) return null;
 
@@ -15,14 +17,22 @@ function CalculatorResult({ result }) {
 
       <div className="flex items-center justify-between">
 
-        <div>
-          <p className="text-sm font-medium uppercase tracking-wider text-cyan-600">
-            Calculation Result
-          </p>
+        <div className="flex items-center gap-4">
+          <BankLogo
+            shortName={result.bank.split(" ")[0].toUpperCase()}
+            name={result.bank}
+            size="h-14 w-14"
+          />
 
-          <h3 className="mt-1 text-2xl font-bold text-slate-900">
-            {result.bank}
-          </h3>
+          <div>
+            <p className="text-sm font-medium uppercase tracking-wider text-cyan-600">
+              Calculation Result
+            </p>
+
+            <h3 className="mt-1 text-2xl font-bold text-slate-900">
+              {result.bank}
+            </h3>
+          </div>
         </div>
 
         <span className="rounded-full bg-cyan-100 px-4 py-2 text-sm font-semibold text-cyan-700">

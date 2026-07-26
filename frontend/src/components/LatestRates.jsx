@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getInterestRates } from "../api/interestRate.api";
-
+import BankLogo from "./ui/BankLogo";
 function LatestRates() {
   const [rates, setRates] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -52,84 +52,86 @@ function LatestRates() {
 
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
 
-  {rates.map((rate) => (
+          {rates.map((rate) => (
 
-    <div
-      key={rate.id}
-      className="group rounded-3xl border border-slate-200 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
-    >
-      {/* Top */}
+            <div
+              key={rate.id}
+              className="group rounded-3xl border border-slate-200 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
+            >
+              {/* Top */}
 
-      <div className="flex items-start justify-between">
+              <div className="flex items-start justify-between">
 
-        <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4">
 
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-cyan-100 text-lg font-bold text-cyan-700">
-            {rate.bank.shortName.charAt(0)}
-          </div>
+                  <BankLogo
+                    shortName={rate.bank.shortName}
+                    name={rate.bank.name}
+                    size="h-14 w-14"
+                  />
 
-          <div>
-            <h3 className="font-bold text-slate-900">
-              {rate.bank.name}
-            </h3>
+                  <div>
+                    <h3 className="font-bold text-slate-900">
+                      {rate.bank.name}
+                    </h3>
 
-            <p className="text-sm text-slate-500">
-              {rate.customerType}
-            </p>
-          </div>
+                    <p className="text-sm text-slate-500">
+                      {rate.customerType}
+                    </p>
+                  </div>
+
+                </div>
+
+                <span className="rounded-full bg-emerald-100 px-3 py-1 text-sm font-semibold text-emerald-700">
+                  {rate.depositType}
+                </span>
+
+              </div>
+
+              {/* Rate */}
+
+              <div className="mt-8">
+
+                <p className="text-sm text-slate-500">
+                  Interest Rate
+                </p>
+
+                <h2 className="mt-2 text-5xl font-extrabold text-cyan-600">
+                  {rate.interestRate}%
+                </h2>
+
+              </div>
+
+              {/* Bottom */}
+
+              <div className="mt-8 flex items-center justify-between text-sm">
+
+                <div>
+                  <p className="text-slate-500">
+                    Tenure
+                  </p>
+
+                  <p className="font-semibold">
+                    {rate.minMonths} Months
+                  </p>
+                </div>
+
+                <a
+                  href={rate.bank.website}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-semibold text-cyan-600 hover:text-cyan-700"
+                >
+                  Visit →
+                </a>
+
+              </div>
+
+            </div>
+
+          ))}
 
         </div>
-
-        <span className="rounded-full bg-emerald-100 px-3 py-1 text-sm font-semibold text-emerald-700">
-          {rate.depositType}
-        </span>
-
-      </div>
-
-      {/* Rate */}
-
-      <div className="mt-8">
-
-        <p className="text-sm text-slate-500">
-          Interest Rate
-        </p>
-
-        <h2 className="mt-2 text-5xl font-extrabold text-cyan-600">
-          {rate.interestRate}%
-        </h2>
-
-      </div>
-
-      {/* Bottom */}
-
-      <div className="mt-8 flex items-center justify-between text-sm">
-
-        <div>
-          <p className="text-slate-500">
-            Tenure
-          </p>
-
-          <p className="font-semibold">
-            {rate.minMonths} Months
-          </p>
-        </div>
-
-        <a
-          href={rate.bank.website}
-          target="_blank"
-          rel="noreferrer"
-          className="font-semibold text-cyan-600 hover:text-cyan-700"
-        >
-          Visit →
-        </a>
-
-      </div>
-
-    </div>
-
-  ))}
-
-</div>
       </div>
     </section>
   );

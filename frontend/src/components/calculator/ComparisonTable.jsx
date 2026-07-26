@@ -1,3 +1,4 @@
+import BankLogo from "../ui/BankLogo";
 function ComparisonTable({ comparison }) {
   if (!comparison || comparison.length === 0) {
     return null;
@@ -80,9 +81,8 @@ function ComparisonTable({ comparison }) {
 
               <tr
                 key={bank.shortName}
-                className={`border-t transition hover:bg-cyan-50 ${
-                  index === 0 ? "bg-amber-50" : ""
-                }`}
+                className={`border-t transition hover:bg-cyan-50 ${index === 0 ? "bg-amber-50" : ""
+                  }`}
               >
 
                 <td className="px-5 py-5 text-lg font-semibold">
@@ -93,9 +93,11 @@ function ComparisonTable({ comparison }) {
 
                   <div className="flex items-center gap-3">
 
-                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-cyan-100 font-bold text-cyan-700">
-                      {bank.shortName?.charAt(0) || bank.bank.charAt(0)}
-                    </div>
+                    <BankLogo
+                      shortName={bank.shortName}
+                      name={bank.bank}
+                      size="h-11 w-11"
+                    />
 
                     <div>
                       <p className="font-semibold text-slate-900">
