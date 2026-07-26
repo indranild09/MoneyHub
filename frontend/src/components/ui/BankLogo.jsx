@@ -1,16 +1,22 @@
+import sbiLogo from "../../assets/logo/sbi.svg";
+import hdfcLogo from "../../assets/logo/hdfc.svg";
+import iciciLogo from "../../assets/logo/icici.svg";
+import axisLogo from "../../assets/logo/axis.svg";
+import kotakLogo from "../../assets/logo/kotak.svg";
+
 function BankLogo({
   shortName,
   name,
   logoUrl,
   size = "h-12 w-12",
 }) {
-  const logos = {
-    SBI: "/logos/sbi.svg",
-    HDFC: "/logos/hdfc.svg",
-    ICICI: "/logos/icici.svg",
-    AXIS: "/logos/axis.svg",
-    KOTAK: "/logos/kotak.svg",
-  };
+const logos = {
+  SBI: sbiLogo,
+  HDFC: hdfcLogo,
+  ICICI: iciciLogo,
+  AXIS: axisLogo,
+  KOTAK: kotakLogo,
+};
 
   const logo = logoUrl || logos[shortName];
 
