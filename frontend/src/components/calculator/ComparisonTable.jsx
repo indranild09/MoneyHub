@@ -1,4 +1,6 @@
 import BankLogo from "../ui/BankLogo";
+import MaturityChart from "../charts/MaturityChart";
+import InterestChart from "../charts/InterestChart";
 function ComparisonTable({ comparison }) {
   if (!comparison || comparison.length === 0) {
     return null;
@@ -25,6 +27,7 @@ function ComparisonTable({ comparison }) {
   };
 
   return (
+    <>
     <div className="mt-8 rounded-3xl border border-slate-200 bg-white p-6 shadow-xl">
 
       <div className="mb-6 flex items-center justify-between">
@@ -138,6 +141,10 @@ function ComparisonTable({ comparison }) {
       </div>
 
     </div>
+    <MaturityChart comparison={comparison} />
+
+    <InterestChart comparison={comparison} />
+  </>
   );
 }
 
