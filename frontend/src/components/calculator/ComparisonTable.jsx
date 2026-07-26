@@ -1,6 +1,6 @@
 import BankLogo from "../ui/BankLogo";
-import MaturityChart from "../charts/MaturityChart";
-import InterestChart from "../charts/InterestChart";
+
+import ComparisonLeaderboard from "./ComparisonLeaderboard";
 function ComparisonTable({ comparison }) {
   if (!comparison || comparison.length === 0) {
     return null;
@@ -141,9 +141,7 @@ function ComparisonTable({ comparison }) {
       </div>
 
     </div>
-    <MaturityChart comparison={comparison} />
-
-    <InterestChart comparison={comparison} />
+    <ComparisonLeaderboard comparison={comparison} />
   </>
   );
 }

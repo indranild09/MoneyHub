@@ -1,4 +1,5 @@
 import prisma from "../config/prisma.js";
+import ApiError from "../utils/ApiError.js";
 
 export async function getAllBanks() {
   return prisma.bank.findMany({
@@ -13,4 +14,25 @@ export async function getAllBanks() {
       name: "asc",
     },
   });
+}
+
+export async function getBank(shortName) {
+  const bank = await prisma.bank.findUnique({
+    where: {
+      shortName: shortName.toUpperCase(),
+    },
+    select: {
+      id: true,
+      name: true,
+      shortName: true,
+      logoUrl: true,
+      website: true,
+    },
+  });
+
+  if (!bank) {
+    throw new ApiError(404, "Bank not found");
+  }
+
+  return bank;
 }
